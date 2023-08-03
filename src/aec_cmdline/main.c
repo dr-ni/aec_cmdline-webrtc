@@ -32,8 +32,9 @@ int main(int argc, char **argv) {
   void *aecmInst = NULL;
   AecConfig config;
   WebRtcAec_Create(&aecmInst);
-  WebRtcAec_Init(aecmInst, 8000, 8000);
+  WebRtcAec_Init(aecmInst, SAMPLE_RATE, SAMPLE_RATE);
   config.nlpMode = kAecNlpConservative;
+//  WebRtcAec_enable_delay_correction(aecmInst, 1);
   WebRtcAec_set_config(aecmInst, config);
 
   // read the first frame...
@@ -44,15 +45,15 @@ int main(int argc, char **argv) {
     // extract interleaved stereo frame S16_LE to separated mono frames
     // rec and ref
     for (counter = 0; counter < STEREO_FRAME_SIZE; counter += 2) {
-      rec[counter / 2] = input[counter];
-      ref[counter / 2] = input[counter + 1];
+      ref[counter / 2] = input[counter];
+      rec[counter / 2] = input[counter + 1];
     }
 
     // do the echo-cancelling
 //    speex_echo_cancellation(st, rec, ref, output);
 //    speex_preprocess_run(den, output);
       WebRtcAec_BufferFarend(aecmInst, rec, MONO_FRAME_SIZE);
-      WebRtcAec_Process(aecmInst, ref, NULL, output, NULL, MONO_FRAME_SIZE, 40, 0);
+      WebRtcAec_Process(aecmInst, ref, NULL, output, NULL, MONO_FRAME_SIZE, 0, 0);
 
     //output the processed frame
     output_size = fwrite(output, 1, sizeof(output), stdout);
