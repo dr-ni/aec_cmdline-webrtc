@@ -1,11 +1,3 @@
-# About
-
-An excerpt of the AudioProcessing module from WebRTC[1][2]
-
-[1] http://code.google.com/p/webrtc/
-[2] https://chromium.googlesource.com/external/webrtc/trunk/webrtc.git
-
-
 # aec_cmdline
 A simple acoustic echo-cancelling command-line tool based on WebRTC.
 
